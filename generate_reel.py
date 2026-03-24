@@ -106,7 +106,7 @@ SLIDES = [
         'texts': [],  # Store info handled separately
         'ken_burns': {'start_scale': 1.0, 'end_scale': 1.03, 'start_xy': (0, 0), 'end_xy': (0, 0)},
         'is_store_info': True,
-        'darken': 0.55,
+        'darken': 0.62,
     },
 ]
 
@@ -319,54 +319,61 @@ def render_store_info(draw, overlay, t_in_slide, duration):
         y_off = int(15 * (1 - fade_t))
 
         if etype == 'title':
-            font = ImageFont.truetype(FONT_MINCHO, 96)
+            font = ImageFont.truetype(FONT_MINCHO, 88)
             fill = (255, 255, 255, alpha)
-            draw_text_with_spacing(draw, text, font, W // 2, 300 + y_off, fill, 24, 'center')
+            draw_text_with_spacing(draw, text, font, W // 2, 260 + y_off, fill, 24, 'center')
 
         elif etype == 'subtitle':
-            font = ImageFont.truetype(FONT_SANS, 32)
+            font = ImageFont.truetype(FONT_SANS, 30)
             fill = (255, 255, 255, int(alpha * 0.8))
-            draw_text_with_spacing(draw, text, font, W // 2, 430 + y_off, fill, 12, 'center')
+            draw_text_with_spacing(draw, text, font, W // 2, 380 + y_off, fill, 12, 'center')
 
         elif etype == 'divider':
             line_alpha = int(alpha * 0.5)
-            draw.line([(W // 2 - 60, 500), (W // 2 + 60, 500)],
+            draw.line([(W // 2 - 60, 450), (W // 2 + 60, 450)],
                       fill=(255, 255, 255, line_alpha), width=2)
 
         elif etype == 'info':
             info_items = [
-                ('ADDRESS', '大阪市中央区東心斎橋1-14-1', 'T・Kビルディング B1F'),
-                ('ACCESS', '心斎橋駅 6番出口 徒歩3分', None),
-                ('HOURS', '17:00 〜 23:00（L.O. 22:00）', None),
-                ('TEL', '06-6245-6141', None),
+                ('ADDRESS', '〒542-0086', None),
+                (None, '大阪府大阪市中央区西心斎橋1-3-3', None),
+                (None, 'オー・エム・ホテル日航ビルB2F', None),
+                ('TEL', '06-6241-7027', None),
+                ('HOURS', 'ランチ 11:30〜14:45（L.O.14:00）', None),
+                (None, 'ディナー 17:00〜22:00（L.O.21:00）', None),
+                (None, '定休日 不定休（施設に準ずる）', None),
+                ('SEATS', '総席数70席 / 宴会最大30名（着席時）', None),
+                (None, '全面禁煙', None),
             ]
 
-            y_pos = 550 + y_off
-            label_font = ImageFont.truetype(FONT_SANS, 26)
-            detail_font = ImageFont.truetype(FONT_MINCHO, 34)
+            y_pos = 500 + y_off
+            label_font = ImageFont.truetype(FONT_MINCHO, 24)
+            detail_font = ImageFont.truetype(FONT_MINCHO, 30)
 
             for label, line1, line2 in info_items:
-                # Label
-                lfill = (255, 255, 255, int(alpha * 0.55))
-                draw_text_with_spacing(draw, label, label_font, W // 2, y_pos, lfill, 8, 'center')
-                y_pos += 42
+                if label is not None:
+                    # Label
+                    lfill = (255, 255, 255, int(alpha * 0.55))
+                    draw_text_with_spacing(draw, label, label_font, W // 2, y_pos, lfill, 8, 'center')
+                    y_pos += 34
 
                 # Detail
                 dfill = (255, 255, 255, alpha)
-                draw_text_with_spacing(draw, line1, detail_font, W // 2, y_pos, dfill, 4, 'center')
-                y_pos += 48
+                draw_text_with_spacing(draw, line1, detail_font, W // 2, y_pos, dfill, 3, 'center')
+                y_pos += 40
                 if line2:
-                    draw_text_with_spacing(draw, line2, detail_font, W // 2, y_pos, dfill, 4, 'center')
-                    y_pos += 48
-                y_pos += 16
+                    draw_text_with_spacing(draw, line2, detail_font, W // 2, y_pos, dfill, 3, 'center')
+                    y_pos += 40
+                if label is not None:
+                    y_pos += 10
 
             # CTA box
-            cta_y = y_pos + 10
-            cta_font = ImageFont.truetype(FONT_MINCHO, 30)
+            cta_y = y_pos + 8
+            cta_font = ImageFont.truetype(FONT_MINCHO, 28)
             cta_text = 'ご予約はプロフィールリンクから'
             bbox = cta_font.getbbox(cta_text)
-            tw = bbox[2] - bbox[0] + 70
-            th = bbox[3] - bbox[1] + 30
+            tw = bbox[2] - bbox[0] + 60
+            th = bbox[3] - bbox[1] + 26
             rx = W // 2 - tw // 2
             ry = cta_y
             draw.rectangle([rx, ry, rx + tw, ry + th],
@@ -374,10 +381,10 @@ def render_store_info(draw, overlay, t_in_slide, duration):
                            fill=(255, 255, 255, int(alpha * 0.1)),
                            width=2)
             dfill = (255, 255, 255, alpha)
-            draw_text_with_spacing(draw, cta_text, cta_font, W // 2, ry + 6, dfill, 5, 'center')
+            draw_text_with_spacing(draw, cta_text, cta_font, W // 2, ry + 5, dfill, 4, 'center')
 
             # Instagram handle
-            handle_font = ImageFont.truetype(FONT_SANS, 28)
+            handle_font = ImageFont.truetype(FONT_SANS, 26)
             hfill = (255, 255, 255, int(alpha * 0.6))
             draw_text_with_spacing(draw, '@zenen_shinsaibashi', handle_font,
                                    W // 2, cta_y + th + 28, hfill, 4, 'center')
