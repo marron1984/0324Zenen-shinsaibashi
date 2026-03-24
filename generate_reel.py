@@ -41,11 +41,11 @@ SLIDES = [
         'ken_burns': {'start_scale': 1.0, 'end_scale': 1.08, 'start_xy': (0, 0), 'end_xy': (-15, 10)},
     },
     {
-        'image': 'room_private.jpg',
+        'image': 'bar_counter.jpg',
         'duration': 4.0,
         'texts': [
-            {'text': '完全個室の\n贅沢な空間', 'font': FONT_SERIF, 'size': 52,
-             'pos': 'top_left', 'delay': 0.4, 'letter_spacing': 14, 'line_height': 1.7},
+            {'text': '完全個室と\n専用バーを完備', 'font': FONT_SERIF, 'size': 52,
+             'pos': 'bottom', 'delay': 0.4, 'letter_spacing': 14, 'line_height': 1.7},
         ],
         'ken_burns': {'start_scale': 1.05, 'end_scale': 1.0, 'start_xy': (10, -5), 'end_xy': (-5, 5)},
     },
@@ -90,23 +90,23 @@ SLIDES = [
         'ken_burns': {'start_scale': 1.04, 'end_scale': 1.0, 'start_xy': (0, -10), 'end_xy': (10, 5)},
     },
     {
-        'image': 'bar_counter.jpg',
+        'image': 'sake_bar_toast.jpg',
         'duration': 4.0,
         'texts': [
             {'text': '食後のひとときも\nこの空間で', 'font': FONT_MINCHO, 'size': 56,
-             'pos': 'center', 'delay': 0.5, 'letter_spacing': 8, 'line_height': 1.6},
+             'pos': 'bottom', 'delay': 0.5, 'letter_spacing': 8, 'line_height': 1.6},
             {'text': '併設バーで余韻を愉しむ', 'font': FONT_SANS, 'size': 28,
-             'pos': 'center_sub', 'delay': 0.9, 'letter_spacing': 6},
+             'pos': 'bottom_sub', 'delay': 0.9, 'letter_spacing': 6},
         ],
         'ken_burns': {'start_scale': 1.0, 'end_scale': 1.06, 'start_xy': (-5, 0), 'end_xy': (5, -10)},
     },
     {
-        'image': 'sake_bar_toast.jpg',
+        'image': 'room_private.jpg',
         'duration': 5.5,
         'texts': [],  # Store info handled separately
         'ken_burns': {'start_scale': 1.0, 'end_scale': 1.03, 'start_xy': (0, 0), 'end_xy': (0, 0)},
         'is_store_info': True,
-        'darken': 0.3,
+        'darken': 0.55,
     },
 ]
 
@@ -235,8 +235,9 @@ def draw_text_with_spacing(draw, text, font, x, y, fill, spacing=0, anchor='cent
         cy = y + li * line_height
 
         for i, c in enumerate(chars):
-            # Shadow
-            draw.text((cx + 2, cy + 2), c, font=font, fill=(0, 0, 0, 160))
+            # Shadow (multi-layer for readability)
+            draw.text((cx + 3, cy + 3), c, font=font, fill=(0, 0, 0, 180))
+            draw.text((cx + 2, cy + 2), c, font=font, fill=(0, 0, 0, 140))
             draw.text((cx + 1, cy + 1), c, font=font, fill=(0, 0, 0, 100))
             # Main text
             draw.text((cx, cy), c, font=font, fill=fill)
@@ -274,13 +275,13 @@ def render_text_overlay(frame_img, slide, t_in_slide, duration):
 
             pos = tdef['pos']
             if pos == 'center':
-                tx, ty = W // 2, H // 2 - 80 + y_offset
+                tx, ty = W // 2, H // 2 - 100 + y_offset
                 draw_text_with_spacing(draw, tdef['text'], font, tx, ty, fill, spacing, 'center')
             elif pos == 'center_below':
-                tx, ty = W // 2, H // 2 + 100 + y_offset
+                tx, ty = W // 2, H // 2 + 120 + y_offset
                 draw_text_with_spacing(draw, tdef['text'], font, tx, ty, fill, spacing, 'center')
             elif pos == 'center_sub':
-                tx, ty = W // 2, H // 2 + 80 + y_offset
+                tx, ty = W // 2, H // 2 + 120 + y_offset
                 draw_text_with_spacing(draw, tdef['text'], font, tx, ty, fill, spacing, 'center')
             elif pos == 'top_left':
                 tx, ty = 80, 240 + y_offset
@@ -288,10 +289,10 @@ def render_text_overlay(frame_img, slide, t_in_slide, duration):
             elif pos == 'bottom':
                 lines = tdef['text'].split('\n')
                 line_h = font_size * tdef.get('line_height', 1.6)
-                ty = H - 200 - int(line_h * len(lines)) + y_offset
+                ty = H - 260 - int(line_h * len(lines)) + y_offset
                 draw_text_with_spacing(draw, tdef['text'], font, W // 2, ty, fill, spacing, 'center')
             elif pos == 'bottom_sub':
-                ty = H - 170 + y_offset
+                ty = H - 200 + y_offset
                 draw_text_with_spacing(draw, tdef['text'], font, W // 2, ty, fill, spacing, 'center')
 
     frame_rgba = frame_img.convert('RGBA')
@@ -318,19 +319,19 @@ def render_store_info(draw, overlay, t_in_slide, duration):
         y_off = int(15 * (1 - fade_t))
 
         if etype == 'title':
-            font = ImageFont.truetype(FONT_MINCHO, 88)
+            font = ImageFont.truetype(FONT_MINCHO, 96)
             fill = (255, 255, 255, alpha)
-            draw_text_with_spacing(draw, text, font, W // 2, 340 + y_off, fill, 20, 'center')
+            draw_text_with_spacing(draw, text, font, W // 2, 300 + y_off, fill, 24, 'center')
 
         elif etype == 'subtitle':
-            font = ImageFont.truetype(FONT_SANS, 28)
-            fill = (255, 255, 255, int(alpha * 0.7))
-            draw_text_with_spacing(draw, text, font, W // 2, 460 + y_off, fill, 10, 'center')
+            font = ImageFont.truetype(FONT_SANS, 32)
+            fill = (255, 255, 255, int(alpha * 0.8))
+            draw_text_with_spacing(draw, text, font, W // 2, 430 + y_off, fill, 12, 'center')
 
         elif etype == 'divider':
-            line_alpha = int(alpha * 0.4)
-            draw.line([(W // 2 - 50, 530), (W // 2 + 50, 530)],
-                      fill=(255, 255, 255, line_alpha), width=1)
+            line_alpha = int(alpha * 0.5)
+            draw.line([(W // 2 - 60, 500), (W // 2 + 60, 500)],
+                      fill=(255, 255, 255, line_alpha), width=2)
 
         elif etype == 'info':
             info_items = [
@@ -340,46 +341,46 @@ def render_store_info(draw, overlay, t_in_slide, duration):
                 ('TEL', '06-6245-6141', None),
             ]
 
-            y_pos = 580 + y_off
-            label_font = ImageFont.truetype(FONT_SANS, 22)
-            detail_font = ImageFont.truetype(FONT_SANS, 28)
+            y_pos = 550 + y_off
+            label_font = ImageFont.truetype(FONT_SANS, 26)
+            detail_font = ImageFont.truetype(FONT_MINCHO, 34)
 
             for label, line1, line2 in info_items:
                 # Label
-                lfill = (255, 255, 255, int(alpha * 0.45))
-                draw_text_with_spacing(draw, label, label_font, W // 2, y_pos, lfill, 6, 'center')
-                y_pos += 36
+                lfill = (255, 255, 255, int(alpha * 0.55))
+                draw_text_with_spacing(draw, label, label_font, W // 2, y_pos, lfill, 8, 'center')
+                y_pos += 42
 
                 # Detail
-                dfill = (255, 255, 255, int(alpha * 0.85))
-                draw_text_with_spacing(draw, line1, detail_font, W // 2, y_pos, dfill, 3, 'center')
-                y_pos += 42
+                dfill = (255, 255, 255, alpha)
+                draw_text_with_spacing(draw, line1, detail_font, W // 2, y_pos, dfill, 4, 'center')
+                y_pos += 48
                 if line2:
-                    draw_text_with_spacing(draw, line2, detail_font, W // 2, y_pos, dfill, 3, 'center')
-                    y_pos += 42
-                y_pos += 18
+                    draw_text_with_spacing(draw, line2, detail_font, W // 2, y_pos, dfill, 4, 'center')
+                    y_pos += 48
+                y_pos += 16
 
             # CTA box
             cta_y = y_pos + 10
-            cta_font = ImageFont.truetype(FONT_SANS, 26)
+            cta_font = ImageFont.truetype(FONT_MINCHO, 30)
             cta_text = 'ご予約はプロフィールリンクから'
             bbox = cta_font.getbbox(cta_text)
-            tw = bbox[2] - bbox[0] + 60
-            th = bbox[3] - bbox[1] + 24
+            tw = bbox[2] - bbox[0] + 70
+            th = bbox[3] - bbox[1] + 30
             rx = W // 2 - tw // 2
             ry = cta_y
             draw.rectangle([rx, ry, rx + tw, ry + th],
-                           outline=(255, 255, 255, int(alpha * 0.5)),
-                           fill=(255, 255, 255, int(alpha * 0.06)),
-                           width=1)
+                           outline=(255, 255, 255, int(alpha * 0.6)),
+                           fill=(255, 255, 255, int(alpha * 0.1)),
+                           width=2)
             dfill = (255, 255, 255, alpha)
-            draw_text_with_spacing(draw, cta_text, cta_font, W // 2, ry + 4, dfill, 4, 'center')
+            draw_text_with_spacing(draw, cta_text, cta_font, W // 2, ry + 6, dfill, 5, 'center')
 
             # Instagram handle
-            handle_font = ImageFont.truetype(FONT_SANS, 24)
-            hfill = (255, 255, 255, int(alpha * 0.5))
+            handle_font = ImageFont.truetype(FONT_SANS, 28)
+            hfill = (255, 255, 255, int(alpha * 0.6))
             draw_text_with_spacing(draw, '@zenen_shinsaibashi', handle_font,
-                                   W // 2, cta_y + th + 24, hfill, 3, 'center')
+                                   W // 2, cta_y + th + 28, hfill, 4, 'center')
 
 
 def generate_reel():
