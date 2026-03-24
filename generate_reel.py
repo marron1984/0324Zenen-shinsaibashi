@@ -303,8 +303,8 @@ def render_text_overlay(frame_img, slide, t_in_slide, duration):
 def render_store_info(draw, overlay, t_in_slide, duration):
     """Render store information on the final slide."""
     elements = [
-        (0.3, 'title', '禅 園'),
-        (0.3, 'subtitle', 'ZENEN SHINSAIBASHI'),
+        (0.3, 'title', '心斎橋 禅 園'),
+        (0.3, 'subtitle', 'SHINSAIBASHI ZENEN'),
         (0.8, 'divider', ''),
         (1.2, 'info', None),
     ]
@@ -319,9 +319,9 @@ def render_store_info(draw, overlay, t_in_slide, duration):
         y_off = int(15 * (1 - fade_t))
 
         if etype == 'title':
-            font = ImageFont.truetype(FONT_MINCHO, 88)
+            font = ImageFont.truetype(FONT_MINCHO, 76)
             fill = (255, 255, 255, alpha)
-            draw_text_with_spacing(draw, text, font, W // 2, 260 + y_off, fill, 24, 'center')
+            draw_text_with_spacing(draw, text, font, W // 2, 270 + y_off, fill, 20, 'center')
 
         elif etype == 'subtitle':
             font = ImageFont.truetype(FONT_SANS, 30)
