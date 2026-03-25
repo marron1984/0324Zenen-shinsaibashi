@@ -30,13 +30,13 @@ FONT_SERIF = os.path.join(FONTS_DIR, 'NotoSerifJP-Variable.ttf')
 # ── Slide Definitions ──
 SLIDES = [
     {
-        'image': 'room_entrance.jpg',
+        'image': 'room_entrance_alt.jpg',
         'duration': 4.5,
         'texts': [
             {'text': '心斎橋に\nこんな場所が\nあったのか', 'font': FONT_MINCHO, 'size': 72,
              'pos': 'center', 'delay': 0.5, 'letter_spacing': 12, 'line_height': 1.8},
-            {'text': '── 禅園心斎橋 ──', 'font': FONT_SANS, 'size': 32,
-             'pos': 'center_below', 'delay': 1.0, 'letter_spacing': 8},
+            {'text': '── 心斎橋禅園 ──', 'font': FONT_SANS, 'size': 32,
+             'pos': 'bottom_badge', 'delay': 1.0, 'letter_spacing': 8},
         ],
         'ken_burns': {'start_scale': 1.0, 'end_scale': 1.08, 'start_xy': (0, 0), 'end_xy': (-15, 10)},
     },
@@ -291,6 +291,9 @@ def render_text_overlay(frame_img, slide, t_in_slide, duration):
                 line_h = font_size * tdef.get('line_height', 1.6)
                 ty = H - 260 - int(line_h * len(lines)) + y_offset
                 draw_text_with_spacing(draw, tdef['text'], font, W // 2, ty, fill, spacing, 'center')
+            elif pos == 'bottom_badge':
+                ty = H - 180 + y_offset
+                draw_text_with_spacing(draw, tdef['text'], font, W // 2, ty, fill, spacing, 'center')
             elif pos == 'bottom_sub':
                 ty = H - 200 + y_offset
                 draw_text_with_spacing(draw, tdef['text'], font, W // 2, ty, fill, spacing, 'center')
@@ -386,7 +389,7 @@ def render_store_info(draw, overlay, t_in_slide, duration):
             # Instagram handle
             handle_font = ImageFont.truetype(FONT_SANS, 26)
             hfill = (255, 255, 255, int(alpha * 0.6))
-            draw_text_with_spacing(draw, '@zenen_shinsaibashi', handle_font,
+            draw_text_with_spacing(draw, '@shinsaibashi.zen_en', handle_font,
                                    W // 2, cta_y + th + 28, hfill, 4, 'center')
 
 
